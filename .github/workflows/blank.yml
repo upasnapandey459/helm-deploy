@@ -1,6 +1,6 @@
 # .github/workflows/deploy.yml
 name: Deploy
-on: ['deployment']
+on: ['workflow_dispatch']
 
 jobs:
   deployment:
@@ -18,9 +18,9 @@ jobs:
         values: |
           name: foobar
         value-files: >-
-        [
-          "values.yaml", 
-          "values.production.yaml"
-        ]
+          [
+            "values.yaml", 
+            "values.production.yaml"
+          ]
       env:
         KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
