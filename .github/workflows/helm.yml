@@ -1,0 +1,36 @@
+# .github/workflows/deploy.yml
+name: Deploy
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: 'ubuntu-latest'
+    steps:
+    - uses: actions/checkout@v1
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+    - name: 'Setup GCloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
+      continue-on-error: false
+    - name: 'GKE Credentials'
+      continue-on-error: false
+      run: |-
+        gcloud container clusters get-credentials upasna-helm-cluster --zone us-central1-c --project q-gcp-7959-genesysstaff-22-06 
+    - name: 'helm install '
+      run: 
+        apt-get update
+        sudo apt-get install -y curl
+        curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+        sudo apt-get install apt-transport-https --yes
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+        sudo apt-get update
+        sudo apt-get install helm
+    - name: 'Create helm Chart'
+      run:   
+         helm install github-actions-app-charts ./github-actions-app-charts/
+      
