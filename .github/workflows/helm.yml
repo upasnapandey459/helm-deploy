@@ -22,8 +22,8 @@ jobs:
       continue-on-error: false
     - name: 'GKE Credentials'
       continue-on-error: false
-      run: |-
-         gcloud container clusters get-credentials cluster-ambassador --zone us-central1-c --project q-gcp-7959-genesysstaff-22-06 
+      run:
+        gcloud container clusters get-credentials upasna-helm-cluster --zone us-central1-c --project q-gcp-7959-genesysstaff-22-06 
     - name: 'helm install '
       run: 
         apt-get update
