@@ -10,19 +10,17 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: 'Deploy'
-      uses: 'deliverybot/helm@master'
-      with:
-        release: 'nginx'
-        namespace: 'default'
-        chart: 'app'
-        token: '${{ github.token }}'
-        values: |
-          name: foobar
-        value-files: >-
-          [
-            "values.yaml", 
-            "values.production.yaml"
-          ]
+    - name: 'helm install '
+      run: 
+        apt-get update
+        sudo apt-get install -y curl
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+        chmod 700 get_helm.sh
+        ./get_helm.sh
+        
+    - name: 'Create helm Chart'
+      run:   
+         helm create helloworld
+         tree helloworld  
       env:
         KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
