@@ -21,7 +21,6 @@ jobs:
         sudo apt-get install helm
     - name: 'Create helm Chart'
       run:   
-         helm create helloworld
-         tree helloworld  
+         helm create helloworld  
       env:
         KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
