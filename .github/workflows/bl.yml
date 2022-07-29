@@ -35,5 +35,5 @@ jobs:
         sudo apt-get install helm
     - name: 'Create helm Chart'
       run:   
-         helm install github-actions-app-charts github-actions-app-charts
+         helm upgrade --install github-actions-app-charts github-actions-app-charts
       
